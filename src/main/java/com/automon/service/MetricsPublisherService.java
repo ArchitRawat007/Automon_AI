@@ -10,18 +10,29 @@ import java.util.Random;
 @Service
 public class MetricsPublisherService {
     private final Random random = new Random();
+    private final RedisService redisService;
 
-    @Scheduled(fixedRate = 5000) // Send updates every 5 seconds
+    public MetricsPublisherService(RedisService redisService) {
+        this.redisService = redisService;
+    }
+
+    @Scheduled(fixedRate = 5000) // Every 5 seconds
     public void sendMetrics() throws IOException {
-        double cpuUsage = 20 + (random.nextDouble() * 50); // Simulated CPU usage
-        double memoryUsage = 30 + (random.nextDouble() * 40); // Simulated Memory usage
+        double cpuUsage = 20 + (random.nextDouble() * 50);
+        double memoryUsage = 30 + (random.nextDouble() * 40);
 
         String metrics = String.format(
                 "{\"timestamp\":\"%s\", \"cpu\": %.2f, \"memory\": %.2f}",
                 LocalDateTime.now(), cpuUsage, memoryUsage);
 
+        // Store metrics in Redis
+        redisService.cacheMetrics("latestMetrics", metrics);
+
+        // Broadcast via WebSocket
         WebSocketHandler.broadcast(metrics);
-        System.out.println("Broadcasted metrics: " + metrics);
+
+        System.out.println("Broadcasted & Cached: " + metrics);
     }
 }
+
 
