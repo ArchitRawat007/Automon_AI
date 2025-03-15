@@ -11,9 +11,11 @@ import java.util.Random;
 public class MetricsPublisherService {
     private final Random random = new Random();
     private final RedisService redisService;
+    private final LogService logService;
 
-    public MetricsPublisherService(RedisService redisService) {
+    public MetricsPublisherService(RedisService redisService, LogService logService) {
         this.redisService = redisService;
+        this.logService = logService;
     }
 
     @Scheduled(fixedRate = 5000) // Every 5 seconds
@@ -28,10 +30,13 @@ public class MetricsPublisherService {
         // Store metrics in Redis
         redisService.cacheMetrics("latestMetrics", metrics);
 
+        // Log the event in Elasticsearch
+        logService.saveLog("System Metrics: " + metrics);
+
         // Broadcast via WebSocket
         WebSocketHandler.broadcast(metrics);
 
-        System.out.println("Broadcasted & Cached: " + metrics);
+        System.out.println("Broadcasted, Cached & Logged: " + metrics);
     }
 }
 

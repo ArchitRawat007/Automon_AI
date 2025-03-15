@@ -11,15 +11,14 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/ws-metrics/**").permitAll() // Allow WebSockets
-                        .anyRequest().authenticated()
-                )
-                .csrf(csrf -> csrf.disable()) // Disable CSRF for WebSockets
-                .formLogin(login -> login.disable()) // Disable default login form
-                .httpBasic(basic -> basic.disable()); // Disable HTTP Basic Auth
+                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())  // ✅ Allow EVERYTHING
+                .csrf(csrf -> csrf.disable()) //
+                .formLogin(form -> form.disable())
+                .httpBasic(httpBasic -> httpBasic.disable());
 
         return http.build();
     }
 }
+
+
 
