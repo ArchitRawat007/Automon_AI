@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 @Service
 public class OpenAIService {
 
-    @Value("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")
+   // @Value("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")
     private String apiKey;
 
     private final String OPENAI_API_URL = "https://api.openai.com/v1/completions";
