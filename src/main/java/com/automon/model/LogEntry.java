@@ -1,5 +1,6 @@
 package com.automon.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.elasticsearch.annotations.Document;
 import java.time.LocalDateTime;
@@ -10,6 +11,8 @@ public class LogEntry {
     @Id
     private String id;
     private String message;
+
+
     private LocalDateTime timestamp;
 
     public LogEntry(String message) {

@@ -16,14 +16,5 @@ public class AutomonApplication {
     public static void main(String[] args) {
         SpringApplication.run(AutomonApplication.class, args);
     }
-
-    @Bean
-    MeterRegistryCustomizer<MeterRegistry> metricsCommonTags() {
-        return registry -> {
-            new JvmMemoryMetrics().bindTo(registry);
-            new ProcessorMetrics().bindTo(registry);
-            new FileDescriptorMetrics().bindTo(registry);
-        };
-    }
 }
 

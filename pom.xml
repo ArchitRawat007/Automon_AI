@@ -48,8 +48,9 @@
         <!-- Monitoring -->
         <dependency>
             <groupId>io.micrometer</groupId>
-            <artifactId>micrometer-registry-prometheus</artifactId>
+            <artifactId>micrometer-registry-influx</artifactId>
         </dependency>
+
 
 
         <!-- OpenAI API -->
